@@ -28,7 +28,7 @@ Harita yakınlaştırılabilir, uzaklaştırılabilir ve sürüklenebilir. Aray�
 
 ## Nasıl çalışır?
 
-- **Adil rastgelelik:** Kazanan, ülkenin tüm şehir listesinden `crypto.getRandomValues` ile seçilir. Çark okunabilirlik için en fazla 12 dilim gösterir (kazanan + rastgele diğerleri); ekrandaki dilim sayısı seçimin adilliğini etkilemez.
+- **Adil rastgelelik:** Kazanan, ülkenin tüm şehir listesinden `crypto.getRandomValues` ile seçilir. Çark seçili filtredeki tüm ülkeleri (en fazla 60) ve ülkenin tüm şehirlerini (en fazla 40) gösterir; dilim yazıları ve bayraklar dilim sayısına göre küçülür. Seçim çarktan bağımsız yapıldığı için dilim sayısı adilliği etkilemez.
 - **Doğru bilgi:** Şehir açıklaması Türkçe Vikipedi'den (yoksa İngilizce) gelir. Sayfa belirsizleştirme sayfası değilse ve koordinatı şehre ≤ 50 km yakınsa kullanılır. Güvenilir kaynak bulunamazsa metin uydurulmaz; yalnızca doğrulanmış konum ve nüfus gösterilir.
 - **İlginç bilgiler:** Ülke başına 2-3 bilgi elle yazılmıştır (`src/data/facts.ts`); amaç yalnızca doğrulanabilir bilgiler vermektir. Hatalı bir bilgi görürsen düzeltme gönderebilirsin.
 - **Kehanet ve kader olayı:** `src/data/fate.ts` içindeki eğlence amaçlı kurgudur ve kartta öyle etiketlenir. Bazı olaylar yalnızca belirli bölgelerde çıkar (ör. kar fırtınası yalnızca Kuzey'de). Türkçe ek hatalarını önlemek için metinler şehir adına ek getirmez.

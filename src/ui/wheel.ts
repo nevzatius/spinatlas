@@ -138,7 +138,7 @@ export class Wheel {
       ctx.fillStyle = color;
       ctx.fill();
       ctx.strokeStyle = 'rgba(10,14,22,.65)';
-      ctx.lineWidth = 2;
+      ctx.lineWidth = n > 30 ? 1 : 2;
       if (n > 1) ctx.stroke(); // a lone slice would otherwise show a stray radial line
       this.drawLabel(slices[i], a0 + step / 2, r, step);
     }
@@ -163,9 +163,11 @@ export class Wheel {
     const { ctx } = this;
     ctx.save();
     ctx.rotate(angle);
-    const flagH = Math.min(r * 0.12, 2 * r * Math.sin(step / 2) * 0.32);
+    // Many slices (e.g. all 60 countries) get narrow: size text and flag from the arc width at their radius.
+    const arc = (at: number) => 2 * r * at * Math.sin(step / 2);
+    const flagH = Math.min(r * 0.12, arc(0.6) * 0.8);
     const flagW = flagH * 4 / 3;
-    const font = Math.max(10, Math.min(r * 0.075, 16));
+    const font = Math.max(6.5, Math.min(r * 0.075, 16, arc(0.8) * 0.62));
     let x = r * 0.93;
     ctx.textAlign = 'right';
     ctx.textBaseline = 'middle';

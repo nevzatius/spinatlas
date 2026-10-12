@@ -8,7 +8,8 @@ import { InfoCard } from './ui/card';
 import { AtlasMap } from './ui/map';
 import { Wheel } from './ui/wheel';
 
-const MAX_SLICES = 12;
+// Show every option on the wheel (60 countries, 40 cities per country at most); sampling only kicks in beyond this.
+const MAX_SLICES = 60;
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 
 const countryWheel = new Wheel($('country-wheel'));
