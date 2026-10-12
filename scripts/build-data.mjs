@@ -11,7 +11,7 @@ const ISO = new Set(countries.map((c) => c.iso));
 
 const PER_COUNTRY = 40; // wheel never needs more; keeps the bundle small
 const TR_NAME_MIN_POP = 200_000; // Turkish exonyms (Varşova) only for big cities; small ones keep the local name
-const MIN_PER_COUNTRY = 5; // tiny countries fall back to the denser cities1000 file
+const MIN_PER_COUNTRY = 5; // small countries fall back to the denser cities1000, then cities500 files
 
 async function loadGeonames(file) {
   const res = await fetch(`https://download.geonames.org/export/dump/${file}.zip`);
@@ -33,13 +33,15 @@ async function loadGeonames(file) {
 
 console.log('GeoNames cities5000 indiriliyor…');
 const main = await loadGeonames('cities5000');
-let dense = null;
+const tiers = [main];
+const loadTier = async (file) => (tiers.push(await loadGeonames(file)), tiers.at(-1));
 const picked = {};
 for (const { iso } of countries) {
   let list = main.get(iso) ?? [];
-  if (list.length < MIN_PER_COUNTRY) {
-    dense ??= await loadGeonames('cities1000');
-    list = dense.get(iso) ?? list;
+  for (const file of ['cities1000', 'cities500']) {
+    if (list.length >= MIN_PER_COUNTRY) break;
+    const t = tiers.find((x) => x.file === file) ?? Object.assign(await loadTier(file), { file });
+    list = t.get(iso) ?? list;
   }
   picked[iso] = list.slice(0, PER_COUNTRY);
 }
@@ -57,15 +59,23 @@ for (let i = 0; i < all.length; i += 150) {
     OPTIONAL { ?tr schema:about ?item; schema:isPartOf <https://tr.wikipedia.org/>; schema:name ?trTitle }
     OPTIONAL { ?en schema:about ?item; schema:isPartOf <https://en.wikipedia.org/>; schema:name ?enTitle }
   }`;
-  const res = await fetch('https://query.wikidata.org/sparql', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      Accept: 'application/sparql-results+json',
-      'User-Agent': 'SpinAtlas-data-build/0.1 (open-source hobby project)',
-    },
-    body: new URLSearchParams({ query }),
-  });
+  let res;
+  for (let attempt = 0; attempt < 6; attempt++) {
+    await new Promise((r) => setTimeout(r, 1500)); // be polite: Wikidata rate-limits bursts
+    res = await fetch('https://query.wikidata.org/sparql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Accept: 'application/sparql-results+json',
+        'User-Agent': 'SpinAtlas-data-build/0.1 (open-source hobby project)',
+      },
+      body: new URLSearchParams({ query }),
+    });
+    if (res.status !== 429) break;
+    const wait = Number(res.headers.get('retry-after')) || 10;
+    console.log(`429, ${wait}s bekleniyor…`);
+    await new Promise((r) => setTimeout(r, wait * 1000));
+  }
   if (!res.ok) throw new Error(`Wikidata: HTTP ${res.status}`);
   for (const b of (await res.json()).results.bindings) {
     wd.set(Number(b.gn.value), {
@@ -76,12 +86,19 @@ for (let i = 0; i < all.length; i += 150) {
   }
 }
 
+// City-states: GeoNames' "city" is the country itself, so Wikidata has no separate city item to match.
+const OVERRIDES = {
+  2993458: { name: 'Monako', tr: 'Monako', en: 'Monaco' },
+  6691831: { name: 'Vatikan', tr: 'Vatikan', en: 'Vatican City' },
+};
+for (const [id, v] of Object.entries(OVERRIDES)) wd.set(Number(id), { ...wd.get(Number(id)), ...v });
+
 const out = {};
 let withWiki = 0;
 for (const [iso, list] of Object.entries(picked)) {
   out[iso] = list.map((c) => {
     const w = wd.get(c.id) ?? {};
-    const rec = { id: c.id, name: c.pop >= TR_NAME_MIN_POP && w.label ? w.label : c.name, lat: c.lat, lon: c.lon, pop: c.pop };
+    const rec = { id: c.id, name: w.name ?? (c.pop >= TR_NAME_MIN_POP && w.label ? w.label : c.name), lat: c.lat, lon: c.lon, pop: c.pop };
     if (w.tr) rec.tr = w.tr;
     if (w.en) rec.en = w.en;
     if (w.tr || w.en) withWiki++;

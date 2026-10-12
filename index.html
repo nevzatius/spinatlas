@@ -4,19 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="dark" />
-    <meta name="description" content="SpinAtlas: çarkı çevir, rastgele bir Erasmus+ ülkesi ve şehri keşfet." />
-    <title>SpinAtlas</title>
+    <meta name="description" content="MSKÜ Erasmus Topluluğu: çarkı çevir, rastgele bir Erasmus+ ülkesi ve şehri keşfet, ilginç bilgiler öğren, kaderini gör." />
+    <title>MSKÜ Erasmus Topluluğu</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%232f6f8f'/%3E%3Cpath d='M16 2v14l10 10' stroke='%23fff' stroke-width='3' fill='none'/%3E%3C/svg%3E" />
   </head>
   <body>
     <header class="site-header">
-      <h1>Spin<span>Atlas</span></h1>
-      <p>Çarkı çevir, Erasmus+ ülkelerinden birini ve o ülkenin bir şehrini keşfet.</p>
+      <h1>MSKÜ <span>Erasmus Topluluğu</span></h1>
+      <p>Çarkı çevir, Erasmus+ program ve partner ülkelerinden birini, ardından o ülkenin bir şehrini keşfet. Kehaneti ve kader olayını da unutma!</p>
+      <button class="sound-toggle" id="sound-btn" type="button" aria-pressed="true">🔊 Ses açık</button>
     </header>
 
     <main class="layout">
       <section class="panel area-country" aria-labelledby="h-country">
         <h2 id="h-country"><b>1</b> Ülke</h2>
+        <div class="chips" id="region-chips" role="group" aria-label="Bölge filtresi"></div>
         <div class="wheel" id="country-wheel"></div>
         <button class="btn" id="country-btn" type="button">Çarkı Çevir</button>
       </section>

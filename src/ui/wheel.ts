@@ -1,5 +1,6 @@
 import { easeOutQuart, sliceUnderPointer, TAU, targetRotation } from '../lib/wheelMath';
 import { randomFloat } from '../lib/random';
+import { sound } from '../lib/sound';
 
 export interface Slice {
   label: string;
@@ -82,6 +83,7 @@ export class Wheel {
   }
 
   private tick(): void {
+    sound.tick();
     this.pointer.classList.remove('tick');
     void this.pointer.offsetWidth; // restart the CSS animation
     this.pointer.classList.add('tick');
@@ -137,7 +139,7 @@ export class Wheel {
       ctx.fill();
       ctx.strokeStyle = 'rgba(10,14,22,.65)';
       ctx.lineWidth = 2;
-      ctx.stroke();
+      if (n > 1) ctx.stroke(); // a lone slice would otherwise show a stray radial line
       this.drawLabel(slices[i], a0 + step / 2, r, step);
     }
 

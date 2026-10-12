@@ -27,6 +27,14 @@ a { color: var(--accent); }
 .site-header h1 { margin: 0; font-size: clamp(2rem, 6vw, 3rem); letter-spacing: -0.02em; }
 .site-header h1 span { color: var(--accent); }
 .site-header p { margin: 6px 0 0; color: var(--muted); }
+.sound-toggle {
+  margin-top: 12px; padding: 6px 14px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--panel); color: var(--text); font: inherit; font-size: 0.85rem; cursor: pointer;
+}
+.sound-toggle:hover { border-color: var(--accent); }
+.sound-toggle:focus-visible { outline: 3px solid #ffd166; outline-offset: 2px; }
+.sound-toggle[aria-pressed='false'] { color: var(--muted); }
 
 .layout {
   display: grid;
@@ -134,3 +142,42 @@ a { color: var(--accent); }
   .wheel-pointer.tick, .card-loading { animation: none; }
   .btn { transition: none; }
 }
+
+/* region filter */
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 14px; }
+.chip {
+  padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px;
+  background: transparent; color: var(--muted); font: inherit; font-size: 0.8rem; cursor: pointer;
+}
+.chip:hover:not(:disabled) { border-color: var(--accent); color: var(--text); }
+.chip[aria-pressed='true'] { background: var(--accent); border-color: var(--accent); color: #06121a; font-weight: 700; }
+.chip:disabled { opacity: 0.5; cursor: not-allowed; }
+.chip:focus-visible { outline: 3px solid #ffd166; outline-offset: 2px; }
+
+/* card extras */
+.badge {
+  display: inline-block; margin-left: 8px; padding: 1px 8px; border-radius: 999px;
+  font-size: 0.7rem; font-weight: 600; background: var(--panel-2); border: 1px solid var(--line); color: var(--muted);
+  vertical-align: middle;
+}
+.badge-program { color: #7be0a4; border-color: #2f6f4a; }
+.badge-partner { color: #ffd166; border-color: #7a5f1f; }
+.card-country { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 0; }
+.block { margin-top: 14px; padding: 12px 14px; border-radius: 12px; background: var(--panel-2); border: 1px solid var(--line); }
+.block h3 { margin: 0 0 6px; font-size: 0.9rem; }
+.block p { margin: 0; }
+.link-btn {
+  margin-top: 8px; padding: 0; border: 0; background: none; color: var(--accent);
+  font: inherit; font-size: 0.85rem; cursor: pointer; text-decoration: underline;
+}
+.link-btn:focus-visible { outline: 3px solid #ffd166; outline-offset: 2px; }
+.block-fate { background: linear-gradient(135deg, #1b1740, #261a3a); border-color: #3b3470; }
+.fate-prophecy { font-style: italic; }
+.fate-event-head { margin-top: 14px !important; }
+.fate-event { display: flex; gap: 12px; align-items: flex-start; }
+.fate-emoji { font-size: 1.8rem; line-height: 1; }
+.fate-event .badge { margin-left: 8px; }
+.fate-event p { margin-top: 2px; }
+.mood-good strong { color: #7be0a4; }
+.mood-bad strong { color: #ff9b9b; }
+.fate-note { margin-top: 10px !important; font-size: 0.75rem; color: var(--muted); }
