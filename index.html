@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="description" content="SpinAtlas: çarkı çevir, rastgele bir Erasmus+ ülkesi ve şehri keşfet." />
+    <title>SpinAtlas</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%232f6f8f'/%3E%3Cpath d='M16 2v14l10 10' stroke='%23fff' stroke-width='3' fill='none'/%3E%3C/svg%3E" />
+  </head>
+  <body>
+    <header class="site-header">
+      <h1>Spin<span>Atlas</span></h1>
+      <p>Çarkı çevir, Erasmus+ ülkelerinden birini ve o ülkenin bir şehrini keşfet.</p>
+    </header>
+
+    <main class="layout">
+      <section class="panel area-country" aria-labelledby="h-country">
+        <h2 id="h-country"><b>1</b> Ülke</h2>
+        <div class="wheel" id="country-wheel"></div>
+        <button class="btn" id="country-btn" type="button">Çarkı Çevir</button>
+      </section>
+
+      <section class="panel area-city is-disabled" id="city-panel" aria-labelledby="h-city">
+        <h2 id="h-city"><b>2</b> Şehir</h2>
+        <div class="wheel" id="city-wheel"></div>
+        <button class="btn" id="city-btn" type="button" disabled>Şehir Çarkını Çevir</button>
+      </section>
+
+      <section class="panel area-map" aria-label="Harita">
+        <div id="map"></div>
+      </section>
+
+      <section class="panel area-card" aria-live="polite" aria-label="Şehir bilgisi">
+        <div id="card"></div>
+        <button class="btn btn-ghost" id="reset-btn" type="button" hidden>Baştan başla</button>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      Şehir verisi <a href="https://www.geonames.org/" target="_blank" rel="noopener">GeoNames</a> (CC BY 4.0) ·
+      Açıklamalar <a href="https://www.wikipedia.org/" target="_blank" rel="noopener">Vikipedi</a> (CC BY-SA) ·
+      Harita © OpenStreetMap katkıda bulunanlar · Bayraklar <a href="https://github.com/lipis/flag-icons" target="_blank" rel="noopener">flag-icons</a> (MIT)
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
